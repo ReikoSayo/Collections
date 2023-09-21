@@ -1,37 +1,33 @@
 package ru.netology.javaqa.javaqamvn.services;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.HashMap;
 
 public class Game {
-    private ArrayList<Player> nameList = new ArrayList<>();
+    private HashMap<String, Integer> nameList = new HashMap<>();
 
-    public void register(Player player) {
-        nameList.add(player);
+    public void register(String name, Integer strength) {
+        nameList.put(name, strength);
     }
 
-    public Player findByName(String playerName1) {
-        for (Player name : nameList) {
-            if (Objects.equals(name.getName(), playerName1)) {
-                return name;
-            }
+    public int findByName(String playerName1) {
+        if (!nameList.containsKey(playerName1)) {
+            throw new NotRegisteredException(
+                    "Player with Name: " + playerName1 + " not registered");
+        } else {
+            return nameList.get(playerName1);
         }
-        return null;
     }
 
     public int round(String playerName1, String playerName2) {
-        int result;
-        Player Pl1 = findByName(playerName1);
-        Player Pl2 = findByName(playerName2);
-        if (Pl1 == null) {
-            throw new NotRegisteredException(
-                    "Player with Name: " + playerName1 + " not registered");
-        } else if (Pl2 == null) {
-            throw new NotRegisteredException(
-                    "Player with Name: " + playerName2 + " not registered");
+        int Pl1 = findByName(playerName1);
+        int Pl2 = findByName(playerName2);
+
+        if (Pl1 < Pl2) {
+            return 2;
+        } else if (Pl1 > Pl2) {
+            return 1;
         } else {
-            result = Pl1.compareTo(Pl2);
+            return 0;
         }
-        return result;
     }
 }

@@ -6,32 +6,28 @@ import org.junit.jupiter.api.Test;
 
 class GameTest {
     Game game = new Game();
-    Player player1 = new Player(1, "Nikita", 50);
-    Player player2 = new Player(2, "Masha", 50);
-    Player player3 = new Player(3, "Roma", 65);
-    Player player4 = new Player(4, "Ruslan", 87);
 
+    //player3 = ("Roma", 65);
     @BeforeEach
     void registerPlayers() {
-        game.register(player1);
-        game.register(player2);
-        game.register(player4);
+        game.register("Nikita", 50);
+        game.register("Masha", 50);
+        game.register("Ruslan", 87);
     }
 
     @Test
     void findByNameTest() {
-        Player expected = player1;
-        Player actual = game.findByName("Nikita");
+        int expected = 50;
+        int actual = game.findByName("Nikita");
 
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
     void noFindByNameTest() {
-        Player expected = null;
-        Player actual = game.findByName("Roma");
-
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertThrows(NotRegisteredException.class, () -> {
+            game.findByName("Roma");
+        });
     }
 
     @Test
